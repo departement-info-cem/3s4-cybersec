@@ -17,9 +17,13 @@
       "title": "Programmation Web avancée", "courseGroup": "1010", 
       "day": "vendredi", "start": "15:10", "end": "17:30", "room": "D0704"
     },
+    { "id": "dispo-local-5w5", "category": "green",
+      "title": "Disponibilité à mon bureau",
+      "day": "vendredi", "start": "12:10", "end": "12:40", "room": "D0704"
+    },
     { "id": "5w5-1020-l", "category": "blue", "courseCode": "420-5W5-EM", 
       "title": "Programmation Web avancée", "courseGroup": "1020", 
-      "day": "vendredi", "start": "12:10", "end": "14:30", "room": "D0704"
+      "day": "vendredi", "start": "12:40", "end": "15:00", "room": "D0704"
     },
     { "id": "3s4-1040-t", "category": "yellow", "courseCode": "420-3S4-EM", 
       "title": "Introduction à la cybersécurité", "courseGroup": "1040", 
@@ -37,13 +41,13 @@
       "title": "Introduction à la cybersécurité", "courseGroup": "1050", 
       "day": "mercredi", "start": "16:10", "end": "18:00", "room": "D0226"
     },
-    { "id": "dispo-bur-1", "category": "green",
+    { "id": "dispo-bur-3", "category": "green",
       "title": "Disponibilité à mon bureau",
-      "day": "null", "start": "00:10", "end": "03:00", "room": "E211"
+      "day": "lundi", "start": "14:10", "end": "16:00", "room": "E211"
     },
-    { "id": "dispo-bur-2", "category": "green",
+    { "id": "dispo-bur-3", "category": "green",
       "title": "Disponibilité à mon bureau",
-      "day": "null", "start": "00:10", "end": "03:00", "room": "E211"
+      "day": "mardi", "start": "10:40", "end": "12:00", "room": "E211"
     },
     { "id": "reunion-dep", "category": "gray",
       "title": "Réunion départementale",
