@@ -15,15 +15,12 @@ if ! docker network inspect labo_net >/dev/null 2>&1; then
     docker network create --subnet=192.168.220.0/24 labo_net
 fi
 
-echo "🔨 Construction de la machine Proie (bureau web + SSH, 192.168.220.128)..."
+# ----- PROIE : construite puis démarrée EN PREMIER (dispo le plus vite possible) -----
+echo "🔨 Construction de la machine Proie (écran de connexion + SSH)..."
 docker build -t ctf-proie ./proie
 
-echo "🔨 Construction de la machine Kali GUI (192.168.220.129)..."
-docker build -t ctf-kali-gui ./kali
-
-echo "▶️ Démarrage du serveur cible ctf-proie (bureau web + SSH)..."
-# -p 22:22 : expose le SSH de la proie sur le LAN (IP du Mac, port SSH standard 22)
-# pour que d'autres postes du local puissent l'attaquer.
+echo "▶️ Démarrage immédiat de la proie (192.168.220.128)..."
+# -p 2222:22 : expose le SSH de la proie (localhost:2222 et LAN) pour l'attaque.
 docker run -d \
   --name ctf-proie \
   --hostname proie-ssh \
@@ -33,6 +30,23 @@ docker run -d \
   -p 3001:3000 \
   -p 2222:22 \
   ctf-proie
+
+# Attendre que la proie soit prête (auth.log créé par l'entrypoint)
+echo "⏳ Attente de la proie..."
+for i in $(seq 1 20); do
+  if docker exec ctf-proie test -f /var/log/auth.log 2>/dev/null; then break; fi
+  sleep 1
+done
+
+# Ouvre une nouvelle fenêtre Terminal qui suit auth.log (tentatives SSH en direct).
+# Ctrl-C dans cette fenêtre -> shell admin de la proie.
+echo "🖥️  Ouverture du terminal de surveillance (auth.log)..."
+osascript -e 'tell application "Terminal" to do script "docker exec -it ctf-proie bash -lc '\''tail -f /var/log/auth.log; exec bash'\''"' >/dev/null 2>&1 \
+  || echo "   (ouvrez-le manuellement : docker exec -it ctf-proie bash -lc 'tail -f /var/log/auth.log')"
+
+# ----- KALI : construite et démarrée ensuite -----
+echo "🔨 Construction de la machine Kali GUI (192.168.220.129)..."
+docker build -t ctf-kali-gui ./kali
 
 echo "▶️ Démarrage de Kali Linux (Interface Graphique Web)..."
 # --privileged : requis pour le bureau XFCE de Kali. Kali décode les icônes

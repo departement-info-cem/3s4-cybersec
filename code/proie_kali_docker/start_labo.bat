@@ -6,12 +6,15 @@ echo ======================================================================
 echo   Laboratoire 2.9 - Demarrage (Proie + Kali)
 echo ======================================================================
 
-REM --- Verifier que Docker Desktop est demarre ---
-docker info >nul 2>&1
+REM --- Verifier que le demon Docker repond (docker ps = 0 si le daemon est joignable).
+REM NB: on evite "docker info" qui renvoie parfois un code != 0 a cause de simples
+REM warnings, meme quand Docker fonctionne.
+docker ps >nul 2>&1
 if errorlevel 1 (
   echo.
-  echo ERREUR: Docker Desktop ne repond pas.
-  echo Lancez Docker Desktop, attendez qu'il soit pret, puis relancez ce script.
+  echo ERREUR: Docker ne repond pas.
+  echo  - Lancez Docker Desktop et attendez qu'il affiche "Running".
+  echo  - S'il vient d'etre installe, redemarrez le PC (mise a jour du PATH).
   echo.
   pause
   exit /b 1
@@ -33,13 +36,27 @@ docker build -t ctf-proie ".\proie"
 if errorlevel 1 goto erreur
 
 echo.
-echo Construction de la machine Kali GUI ...
-docker build -t ctf-kali-gui ".\kali"
+echo Demarrage immediat de la Proie ...
+docker run -d --name ctf-proie --hostname proie-ssh --cap-add=NET_ADMIN --net labo_net --ip 192.168.220.128 -p 3001:3000 -p 2222:22 ctf-proie
 if errorlevel 1 goto erreur
 
+REM --- Attendre que la proie soit prete, puis ouvrir un terminal sur auth.log ---
+echo Attente de la proie ...
+set /a _try=0
+:waitproie
+docker exec ctf-proie test -f /var/log/auth.log >nul 2>&1
+if not errorlevel 1 goto proieok
+set /a _try+=1
+if %_try% geq 20 goto proieok
+ping -n 2 127.0.0.1 >nul
+goto waitproie
+:proieok
+echo Ouverture du terminal de surveillance (auth.log) ...
+start "Proie - auth.log" cmd /k docker exec -it ctf-proie bash -lc "tail -f /var/log/auth.log; exec bash"
+
 echo.
-echo Demarrage de la Proie ...
-docker run -d --name ctf-proie --hostname proie-ssh --cap-add=NET_ADMIN --net labo_net --ip 192.168.220.128 -p 3001:3000 -p 2222:22 ctf-proie
+echo Construction de la machine Kali GUI ...
+docker build -t ctf-kali-gui ".\kali"
 if errorlevel 1 goto erreur
 
 echo Demarrage de Kali Linux ...
