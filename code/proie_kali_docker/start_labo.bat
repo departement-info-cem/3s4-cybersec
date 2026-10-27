@@ -14,7 +14,7 @@ if errorlevel 1 (
   echo.
   echo ERREUR: Docker ne repond pas.
   echo  - Lancez Docker Desktop et attendez qu'il affiche "Running".
-  echo  - S'il vient d'etre installe, redemarrez le PC (mise a jour du PATH).
+  echo  - S'il vient d'etre installe, redemarrez le PC ^(mise a jour du PATH^).
   echo.
   pause
   exit /b 1
