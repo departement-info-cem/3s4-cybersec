@@ -46,8 +46,8 @@ RUN printf 'LANG=C.UTF-8\n' > /etc/default/locale && \
 RUN printf ':1 local /usr/bin/Xvnc :1 -geometry 1360x768 -depth 24 -SecurityTypes None -AlwaysShared -rfbport 5901 -ac\n' \
         > /etc/X11/xdm/Xservers && \
     sed -i 's/^DisplayManager.requestPort.*/DisplayManager.requestPort: 0/' /etc/X11/xdm/xdm-config && \
-    printf 'exec startxfce4\n' > /etc/skel/.xsession && \
-    printf 'exec startxfce4\n' > /root/.xsession
+    printf 'vncconfig -nowin &\nexec startxfce4\n' > /etc/skel/.xsession && \
+    printf 'vncconfig -nowin &\nexec startxfce4\n' > /root/.xsession
 
 COPY init_proie.sh /root/init_proie.sh
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh

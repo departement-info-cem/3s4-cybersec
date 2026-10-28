@@ -11,6 +11,9 @@ Xvnc :1 -geometry 1360x768 -depth 24 -SecurityTypes None -AlwaysShared -listen t
 sleep 2
 # Session XFCE : menu d'applications (catégories) + barre des tâches
 dbus-launch --exit-with-session startxfce4 >/var/log/xfce.log 2>&1 &
+# Presse-papiers partagé : relie la sélection X11 (CLIPBOARD) au presse-papiers
+# VNC, pour que le copier-coller passe entre le conteneur et le navigateur (noVNC).
+vncconfig -nowin >/var/log/vncconfig.log 2>&1 &
 # websockify sert le client noVNC (port 3000 interne) et proxifie vers Xvnc (5901)
 websockify --web=/usr/share/novnc 3000 localhost:5901 >/var/log/novnc.log 2>&1 &
 
