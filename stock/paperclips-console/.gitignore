@@ -1,0 +1,19 @@
+# Build results
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio cache/options
+.vs/
+.vscode/
+
+# Game save data (example - users will have their own)
+data.json
