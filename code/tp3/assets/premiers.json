@@ -1,0 +1,8 @@
+﻿[
+  { "Nom": "Justin Trudeau", "NAS": "111111111", "MotDePasse": "Passw0rd1!", "Revenus": [ { "Annee": 2024, "Revenu": 95000 }, { "Annee": 2023, "Revenu": 92000 }, { "Annee": 2022, "Revenu": 90000 }, { "Annee": 2021, "Revenu": 88000 }, { "Annee": 2020, "Revenu": 85000 } ] },
+  { "Nom": "Stephen Harper", "NAS": "123456123", "MotDePasse": "StephDaBest", "Revenus": [ { "Annee": 2024, "Revenu": 110000 }, { "Annee": 2023, "Revenu": 105000 }, { "Annee": 2022, "Revenu": 102000 }, { "Annee": 2021, "Revenu": 100000 }, { "Annee": 2020, "Revenu": 98000 } ] },
+  { "Nom": "Paul Martin", "NAS": "456456465", "MotDePasse": "Ministre 1!", "Revenus": [ { "Annee": 2024, "Revenu": 60000 }, { "Annee": 2023, "Revenu": 62000 }, { "Annee": 2022, "Revenu": 61000 }, { "Annee": 2021, "Revenu": 59000 }, { "Annee": 2020, "Revenu": 58000 }, { "Annee": 2019, "Revenu": 57000 } ] },
+  { "Nom": "Jean Chrétien", "NAS": "987987987", "MotDePasse": "shawinigan", "Revenus": [ { "Annee": 2024, "Revenu": 70000 }, { "Annee": 2023, "Revenu": 72000 }, { "Annee": 2022, "Revenu": 71000 }, { "Annee": 2021, "Revenu": 69000 }, { "Annee": 2020, "Revenu": 68000 } ] },
+  { "Nom": "Kim Campbell", "NAS": "123123123", "MotDePasse": "GirlPower", "Revenus": [ { "Annee": 2024, "Revenu": 75000 }, { "Annee": 2023, "Revenu": 73000 }, { "Annee": 2022, "Revenu": 72000 }, { "Annee": 2021, "Revenu": 70000 }, { "Annee": 2020, "Revenu": 69000 } ] },
+  { "Nom": "Mark Carney", "NAS": "666999666", "MotDePasse": "fortsmith", "Revenus": [ { "Annee": 2024, "Revenu": 250000 }, { "Annee": 2023, "Revenu": 240000 }, { "Annee": 2022, "Revenu": 230000 }, { "Annee": 2021, "Revenu": 220000 }, { "Annee": 2020, "Revenu": 210000 }, { "Annee": 2019, "Revenu": 200000 }, { "Annee": 2018, "Revenu": 190000 } ] }
+]
