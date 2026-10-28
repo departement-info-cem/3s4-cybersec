@@ -1,16 +1,23 @@
-name: Générer les zips de code
+name: Générer les zips de code et les exécutables
 
 on:
   push:
     branches: [main]
     paths:
       - "code/**"
+      - "stock/**/*.cs"
+      - "stock/**/*.csproj"
+      - "stock/**/*.c"
 
 jobs:
   zip:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "8.0.x"
 
       - name: Zipper les sous-dossiers de code/
         run: |
@@ -21,9 +28,29 @@ jobs:
             (cd "$subdir" && zip -r "${GITHUB_WORKSPACE}/zips/code-${name}.zip" .)
             done
 
+      # Un .exe Windows en fichier unique par projet C# de stock/ (nécessite le runtime .NET 8 sur le poste)
+      - name: Compiler les projets C# de stock/
+        run: |
+            mkdir -p exes
+            find stock -name "*.csproj" | while read -r projet; do
+            dotnet publish "$projet" -c Release -r win-x64 --self-contained false \
+              -p:PublishSingleFile=true -o exes
+            done
+            rm -f exes/*.pdb
+
+      # Un .exe Windows natif par dossier de stock/ qui contient du C (sans symboles, -s, pour l'ingénierie inverse)
+      - name: Compiler les projets C de stock/
+        run: |
+            sudo apt-get update -q && sudo apt-get install -y -q gcc-mingw-w64-x86-64
+            find stock -name "*.c" -exec dirname {} \; | sort -u | while read -r dossier; do
+            x86_64-w64-mingw32-gcc -O0 -s -static -o "exes/$(basename "$dossier").exe" "$dossier"/*.c
+            done
+
       - name: Créer la release
         uses: softprops/action-gh-release@v3
         with:
           tag_name: labs-${{ github.run_number }}
           name: "Labs — build ${{ github.run_number }}"
-          files: zips/*.zip
+          files: |
+            zips/*.zip
+            exes/*.exe
