@@ -34,6 +34,7 @@ namespace PaperclipsConsole
             // Game Messages
             { "Msg_GameLoaded", new Dictionary<Language, string> { { Language.French, "Partie chargée avec succès!" }, { Language.English, "Game loaded successfully!" } } },
             { "Msg_LoadError", new Dictionary<Language, string> { { Language.French, "Erreur lors du chargement: sauvegarde invalide ou mal chiffrée.\nLe fichier a été conservé dans {0}\nUne nouvelle partie sera créée. Appuyez sur une touche..." }, { Language.English, "Error loading game: invalid or badly encrypted save.\nThe file was kept in {0}\nA new game will be created. Press any key..." } } },
+            { "Msg_CtfFlag", new Dictionary<Language, string> { { Language.French, "Plus d'un million de dollars?! Vous avez triché... Voici votre flag: {0}\nAppuyez sur une touche..." }, { Language.English, "Over a million dollars?! You cheated... Here is your flag: {0}\nPress any key..." } } },
             { "Msg_NewGameStarted", new Dictionary<Language, string> { { Language.French, "Nouvelle partie créée avec $20 de départ!" }, { Language.English, "New game created with $20 start!" } } },
             { "Msg_GameSaved", new Dictionary<Language, string> { { Language.French, "\n[Partie sauvegardée]" }, { Language.English, "\n[Game Saved]" } } },
             { "Msg_SaveError", new Dictionary<Language, string> { { Language.French, "\nErreur lors de la sauvegarde: {0}" }, { Language.English, "\nError saving game: {0}" } } },

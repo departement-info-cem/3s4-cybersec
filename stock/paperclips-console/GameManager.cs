@@ -21,6 +21,7 @@ namespace PaperclipsConsole
         private DateTime lastDisplay;
         private Random random;
         private bool needsRedraw = true;
+        private bool loadedEncrypted = false;
         private static readonly CultureInfo invCulture = CultureInfo.InvariantCulture;
 
         // Hardcoded Key and IV for AES
@@ -73,7 +74,8 @@ namespace PaperclipsConsole
         private GameState TryLoadState()
         {
             if (!File.Exists(savePath)) return null;
-            
+            loadedEncrypted = false;
+
             try
             {
                 string json;
@@ -89,6 +91,7 @@ namespace PaperclipsConsole
                     // If not valid JSON or read error, try decrypting
                     byte[] encryptedBytes = File.ReadAllBytes(savePath);
                     json = DecryptStringFromBytes_Aes(encryptedBytes, AesKey, AesIV);
+                    loadedEncrypted = true;
                 }
 
                 return JsonSerializer.Deserialize<GameState>(json);
@@ -111,6 +114,7 @@ namespace PaperclipsConsole
                 state = loadedState;
                 Localization.CurrentLanguage = state.Language;
                 Console.WriteLine(Localization.Get("Msg_GameLoaded"));
+                ShowCtfFlag();
             }
             else
             {
@@ -121,6 +125,28 @@ namespace PaperclipsConsole
                 state = CreateNewGameState();
                 SaveGame();
             }
+        }
+
+        // CTF: a loaded save with at least 1,000,000 $ reveals a flag that depends on how the save was read.
+        // The flag is derived from the AES key so it does not appear in clear in the executable.
+        private void ShowCtfFlag()
+        {
+            if (state.Funds < 1_000_000) return;
+
+            string challenge;
+            if (loadedEncrypted)
+                challenge = "rechiffre";     // a valid encrypted save: the player encrypted it with the game's key
+            else if (state.EncryptSave)
+                challenge = "raccourci";     // plain text accepted even though encryption is enabled
+            else
+                challenge = "clair";         // plain text save, no encryption
+
+            using var hmac = new HMACSHA256(AesKey);
+            byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(challenge));
+            string flag = "CEM{" + challenge + "_" + Convert.ToHexString(hash, 0, 8).ToLowerInvariant() + "}";
+
+            Console.WriteLine(Localization.Get("Msg_CtfFlag", flag));
+            Console.ReadKey(true);
         }
 
         private GameState CreateNewGameState()
