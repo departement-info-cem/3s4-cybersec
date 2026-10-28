@@ -7,6 +7,7 @@ on:
       - "code/**"
       - "stock/**/*.cs"
       - "stock/**/*.csproj"
+      - "stock/**/*.c"
 
 jobs:
   zip:
@@ -36,6 +37,14 @@ jobs:
               -p:PublishSingleFile=true -o exes
             done
             rm -f exes/*.pdb
+
+      # Un .exe Windows natif par dossier de stock/ qui contient du C (sans symboles, -s, pour l'ingénierie inverse)
+      - name: Compiler les projets C de stock/
+        run: |
+            sudo apt-get update -q && sudo apt-get install -y -q gcc-mingw-w64-x86-64
+            find stock -name "*.c" -exec dirname {} \; | sort -u | while read -r dossier; do
+            x86_64-w64-mingw32-gcc -O0 -s -static -o "exes/$(basename "$dossier").exe" "$dossier"/*.c
+            done
 
       - name: Créer la release
         uses: softprops/action-gh-release@v3
