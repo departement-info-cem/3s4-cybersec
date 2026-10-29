@@ -37,7 +37,7 @@ if errorlevel 1 goto erreur
 
 echo.
 echo Demarrage immediat de la Proie ...
-docker run -d --name ctf-proie --hostname proie-ssh --cap-add=NET_ADMIN --net labo_net --ip 192.168.220.128 -p 3001:3000 -p 2222:22 ctf-proie
+docker run -d --name ctf-proie --hostname proie-ssh --cap-add=NET_ADMIN --net labo_net --ip 192.168.220.128 -p 3001:3000 -p 22:22 ctf-proie
 if errorlevel 1 goto erreur
 
 REM --- Attendre que la proie soit prete, puis ouvrir un terminal sur auth.log ---
@@ -71,7 +71,7 @@ echo   Interface Kali  : http://localhost:3000
 echo   Interface Proie : http://localhost:3001   (ecran de connexion)
 echo.
 echo   Cible SSH (depuis le terminal Kali) : 192.168.220.128  port 22
-echo   Cible SSH (depuis Windows)          : localhost        port 2222
+echo   Cible SSH (depuis Windows)          : localhost        port 22
 echo.
 echo   Terminal admin de la Proie : docker exec -it ctf-proie bash
 echo ======================================================================
