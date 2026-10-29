@@ -30,6 +30,7 @@ namespace PaperclipsConsole
                 var choices = new List<string>();
                 if (saveExists) choices.Add(Localization.Get("Menu_Continue"));
                 choices.Add(Localization.Get("Menu_NewGame"));
+                choices.Add(Localization.Get("Menu_HowToPlay"));
                 choices.Add(Localization.Get("Menu_Language"));
                 
                 string encryptionStatus = state.EncryptSave ? Localization.Get("Menu_Enabled") : Localization.Get("Menu_Disabled");
@@ -62,6 +63,10 @@ namespace PaperclipsConsole
                         return MenuChoice.NewGame;
                     }
                 }
+                else if (selection == Localization.Get("Menu_HowToPlay"))
+                {
+                    ShowHowToPlay();
+                }
                 else if (selection == Localization.Get("Menu_Language"))
                 {
                     Localization.CurrentLanguage = Localization.CurrentLanguage == Language.French ? Language.English : Language.French;
@@ -75,6 +80,24 @@ namespace PaperclipsConsole
                     return MenuChoice.Quit;
                 }
             }
+        }
+
+        private static void ShowHowToPlay()
+        {
+            AnsiConsole.Clear();
+
+            var panel = new Panel(new Markup(Localization.Get("Help_Text")))
+            {
+                Header = new PanelHeader($" [cyan1]{Localization.Get("Menu_HowToPlay")}[/] ", Justify.Center),
+                Border = BoxBorder.Double,
+                BorderStyle = new Style(Color.Cyan1),
+                Padding = new Padding(2, 0)
+            };
+
+            AnsiConsole.Write(panel);
+            AnsiConsole.WriteLine();
+            AnsiConsole.MarkupLine(Localization.Get("Help_Back"));
+            Console.ReadKey(true);
         }
 
         private static bool ConfirmNewGame()
