@@ -4,10 +4,10 @@ namespace MiniComptes;
 
 static class BaseDeDonnees
 {
-    // La BD est un simple fichier SQLite rangé quelque part dans le profil de l'utilisateur.
+    // La BD est un simple fichier SQLite rangé dans %APPDATA%\secret.
     private static readonly string CheminBD = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "MiniComptes",
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        "secret",
         "comptes.db");
 
     private static SqliteConnection OuvrirConnexion()
